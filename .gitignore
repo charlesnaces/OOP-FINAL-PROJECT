@@ -1,0 +1,17 @@
+# This File contains all the code that should be ignored by git
+
+
+
+
+
+
+
+# Python virtual environment
+.venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/

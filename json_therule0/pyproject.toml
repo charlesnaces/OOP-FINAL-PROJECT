@@ -1,0 +1,7 @@
+[project]
+name = "json_therule0"
+version = "0.1.0"
+authors = [
+    { name="Your Name", email="you@example.com" },
+]
+description = "A library for loading, cleaning, and reading JSON data."

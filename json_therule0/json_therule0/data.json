@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "  Product A  ",
+        "price": "15.99",
+        "stock": 100,
+        "details": {"manufacturer": "Factory A", "on_sale": true}
+    },
+    {
+        "id": 2,
+        "name": "Product B",
+        "price": "25.50",
+        "stock": null,
+        "details": {"manufacturer": "Factory B", "on_sale": false}
+    },
+    {
+        "id": 1,
+        "name": "Product A",
+        "price": 15.99,
+        "stock": 100,
+        "details": {"manufacturer": "Factory A", "on_sale": true}
+    }
+]

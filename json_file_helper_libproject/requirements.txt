@@ -1,1 +1,0 @@
-requirements.txt lists all packages needed to develop or run the project

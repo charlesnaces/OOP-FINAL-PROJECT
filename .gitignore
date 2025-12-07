@@ -1,0 +1,27 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folders
+venv/
+.venv/
+env/
+.env/
+
+# IDE and editor folders
+.vscode/
+.idea/
+
+# Build and distribution artifacts
+build/
+dist/
+*.egg-info/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+
+# Dummy data files created by scripts
+sample_data.json

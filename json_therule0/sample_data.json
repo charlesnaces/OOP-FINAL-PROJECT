@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "user": {
+      "name": "  Alice  ",
+      "email": "alice@example.com"
+    },
+    "roles": [
+      "admin",
+      "editor"
+    ]
+  },
+  {
+    "id": 2,
+    "user": {
+      "name": "Bob",
+      "email": null
+    },
+    "roles": [
+      "viewer"
+    ]
+  },
+  {
+    "id": 1,
+    "user": {
+      "name": "Alice"
+    },
+    "roles": [
+      "admin",
+      "editor"
+    ]
+  },
+  {
+    "id": 3,
+    "user": {
+      "name": "Charlie"
+    },
+    "details": {
+      "age": 30,
+      "city": "New York"
+    }
+  }
+]

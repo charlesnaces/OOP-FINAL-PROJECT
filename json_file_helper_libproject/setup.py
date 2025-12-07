@@ -1,1 +1,0 @@
-# setup.py lists only the packages required to install and use the library.

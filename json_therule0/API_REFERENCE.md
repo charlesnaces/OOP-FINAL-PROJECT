@@ -30,83 +30,11 @@ Think of it like a car factory assembly line:
 │ (Step 2: Clean)     │     • Remove extra spaces
 └──────────┬──────────┘     • Delete empty values
            │                • Remove duplicates
-           ↓                • Fix data types
-┌─────────────────────┐     • Rename columns
-│ JSONReader          │  ← Analyze:
-│ (Step 3: Analyze)   │     • How many rows/columns?
-└──────────┬──────────┘     • What's average/min/max?
-           │
-           ↓
-┌─────────────────────┐
-│ AdvancedReader      │  ← Advanced features:
-│ (Step 4: Advanced)  │     • Export to CSV
-└─────────────────────┘     • Filter records
-                           • Detailed descriptions
-```
+        ## 🎓 OOP Principles
 
----
+        This library is implemented following core Object-Oriented Programming (OOP) principles such as encapsulation, inheritance, composition, polymorphism, and the single-responsibility principle. Those design choices are expressed directly in the code (see the classes in `json_therule0/` for concrete examples) rather than as tutorial content in this reference.
 
-## 📚 The 4 Classes Explained
-
-### 1. JSONLoader - "The Bouncer" 🚪
-
-**What it does**: Reads your JSON file and checks if it's actually valid.
-
-**Location**: `json_therule0/loader.py`
-
-**How to use**:
-```python
-from json_therule0 import JSONLoader
-
-loader = JSONLoader('data.json')          # Load the file
-raw_data = loader.get_raw_data()          # Get the original data
-print(loader)                             # See what you loaded
-```
-
-**What it checks**:
-- ✅ File exists and is readable
-- ✅ Content is valid JSON (not broken)
-- ✅ Root is a **list of objects** (not just one object)
-- ❌ Raises an error if something is wrong
-
-**Errors you might see**:
-- `FileNotFoundError`: File doesn't exist → Check your file path!
-- `InvalidJSONError`: JSON is broken or not a list → Fix your JSON!
-
----
-
-### 2. JSONCleaner - "The Janitor" 🧹
-
-**What it does**: Fixes dirty data using a clean, easy-to-use interface.
-
-**Location**: `json_therule0/cleaner.py`
-
-**How to use** (method chaining):
-```python
-from json_therule0 import JSONCleaner
-
-cleaner = JSONCleaner('messy_data.json')
-
-cleaned_data = (cleaner
-    .trim_whitespace()              # Remove "  spaces  "
-    .remove_null_values()           # Delete None values
-    .remove_duplicates()            # Keep only unique records
-    .convert_type('price', float)   # String to number
-    .rename_key('user', 'username') # Rename columns
-    .get_cleaned_data())            # Get the result
-```
-
-**Available methods**:
-
-| Method | What it does | Example |
-|--------|-------------|---------|
-| `trim_whitespace()` | Remove leading/trailing spaces | `"  hello  "` → `"hello"` |
-| `remove_null_values()` | Delete keys with None values | `{"name": None, "age": 25}` → `{"age": 25}` |
-| `remove_duplicates()` | Keep only unique records | `[{a:1}, {a:1}, {a:2}]` → `[{a:1}, {a:2}]` |
-| `convert_type(column, type)` | Change data type | `"100"` → `100` (string to int) |
-| `rename_key(old, new)` | Rename a column everywhere | `"user_id"` → `"userid"` |
-| `get_cleaned_data()` | Get the final cleaned data | Returns cleaned list |
-| `get_raw_data()` | Get original data (unchanged) | Returns original list |
+        ---
 
 **Key idea**: Each method returns `self`, so you can chain them together!
 

@@ -1,10 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "json_therule0"
-version = "0.1.0"
+version = "0.1.1"
+description = "A library for loading, cleaning, and reading JSON data with OOP principles"
+requires-python = ">=3.8"
 authors = [
-    { name="Your Name", email="you@example.com" },
+    { name="Charles Naces", email="naces.charleschristian@gmail.com" },
 ]
-description = "A library for loading, cleaning, and reading JSON data."
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/charlesnaces/OOP-FINAL-PROJECT"
 
 [tool.setuptools]
 packages = ["json_therule0"]

@@ -2,6 +2,7 @@
 
 from collections import Counter
 import json
+import copy
 
 class JSONReader:
     """
@@ -131,3 +132,34 @@ class JSONReader:
                     'freq': freq
                 }
         return stats
+
+    def get_all(self) -> list:
+        """
+        Returns a deep copy of all records.
+
+        Returns:
+            list: A list of record dictionaries.
+        """
+        return copy.deepcopy(self.__data)
+
+    def get_first(self):
+        """Return the first record or None if empty."""
+        if not self.__data:
+            return None
+        return copy.deepcopy(self.__data[0])
+
+    def get_last(self):
+        """Return the last record or None if empty."""
+        if not self.__data:
+            return None
+        return copy.deepcopy(self.__data[-1])
+
+    def filter(self, predicate):
+        """Return a list of records where predicate(record) is True.
+
+        Args:
+            predicate (callable): A function that accepts a record and returns a boolean.
+        """
+        if not callable(predicate):
+            raise TypeError("predicate must be callable")
+        return [copy.deepcopy(r) for r in self.__data if predicate(r)]

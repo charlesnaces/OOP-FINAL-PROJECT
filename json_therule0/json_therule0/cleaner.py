@@ -50,7 +50,8 @@ class JSONCleaner:
         Returns:
             list: A list of dictionaries representing the cleaned JSON data.
         """
-        return self.__cleaned_data
+        # Return a deep copy to prevent external mutation of internal state
+        return copy.deepcopy(self.__cleaned_data)
 
     def get_raw_data(self) -> list:
         """

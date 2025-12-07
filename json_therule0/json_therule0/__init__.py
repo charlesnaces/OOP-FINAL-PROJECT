@@ -13,3 +13,9 @@ __all__ = [
     "AdvancedJSONReader",
     "InvalidJSONError"
 ]
+
+# Package version
+__version__ = "0.1.1"
+
+# Export version as well
+__all__.append("__version__")

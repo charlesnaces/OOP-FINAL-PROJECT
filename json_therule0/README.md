@@ -69,20 +69,9 @@ data/sample_data.json        # Example JSON file (messy data)
 main.py                      # Complete workflow example
 ```
 
-## Learn OOP Principles Here!
+## OOP Principles
 
-This library shows you **4 key OOP concepts** in action:
-
-| Concept | What We Do | Why It Matters |
-|---------|-----------|---------------|
-| **Classes** | 4 classes: Loader, Cleaner, Reader, AdvancedReader | Organize code into reusable pieces |
-| **Encapsulation** | Hide private attributes (`_data`), expose public methods | Keep internals safe from accidents |
-| **Inheritance** | AdvancedReader inherits from Reader | Reuse code without copying it |
-| **Composition** | Cleaner uses a Loader inside it | Build complex objects from simpler ones |
-
-**See `API_REFERENCE.md` for detailed examples of each principle.**
-
-See `API_REFERENCE.md` for complete API documentation.
+This project is implemented using standard Object-Oriented Programming (OOP) design patterns (encapsulation, inheritance, composition and single-responsibility). Those design decisions are reflected directly in the package code — see the classes in `json_therule0/` and `API_REFERENCE.md` for usage examples and documentation.
 
 ## Testing
 
@@ -95,13 +84,3 @@ All tests pass (5/5 ✅).
 ## License
 
 MIT License - see LICENSE file for details.
-
-
-# 3. Pass the cleaned data to the reader for analysis
-reader = JSONReader(cleaned_data)
-
-print(f"Shape of the data (rows, columns): {reader.shape()}")
-print(f"Columns: {reader.get_columns()}")
-print("\nSummary Statistics:")
-print(reader.summary_stats())
-```

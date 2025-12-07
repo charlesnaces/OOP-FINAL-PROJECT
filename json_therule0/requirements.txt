@@ -1,0 +1,2 @@
+# json_therule0 requires only Python standard library
+# No external dependencies

@@ -38,6 +38,21 @@ class JSONReader:
         rows, cols = self.shape()
         return f"<{self.__class__.__name__} rows={rows} columns={cols}>"
 
+    def __eq__(self, other) -> bool:
+        """Compares two JSONReader objects by data and columns."""
+        if not isinstance(other, JSONReader):
+            return False
+        return self.__data == other.__data and self.__columns == other.__columns
+
+    def __str__(self) -> str:
+        """Returns a user-friendly string representation."""
+        rows, cols = self.shape()
+        return f"JSONReader with {rows} rows and {cols} columns"
+
+    def __len__(self) -> int:
+        """Returns the number of records (rows) in the data."""
+        return len(self.__data)
+
     def shape(self) -> tuple:
         """
         Returns the shape of the data as (number of rows, number of columns).

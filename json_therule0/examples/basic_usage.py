@@ -6,7 +6,7 @@ def main():
     """
     Demonstrates the end-to-end workflow of the json_therule0 library.
     """
-    filepath = 'data.json'
+    filepath = '../data/sample_data.json'
 
     try:
         # 1. Initialize the cleaner, which automatically loads the data

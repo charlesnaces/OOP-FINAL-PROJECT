@@ -33,6 +33,16 @@ class JSONCleaner:
         return (f"<{self.__class__.__name__} file='{self.filepath}' "
                 f"raw_rows={raw_count} cleaned_rows={cleaned_count}>")
 
+    def __eq__(self, other) -> bool:
+        """Compares two JSONCleaner objects by filepath and cleaned data."""
+        if not isinstance(other, JSONCleaner):
+            return False
+        return self.filepath == other.filepath and self.__cleaned_data == other.__cleaned_data
+
+    def __str__(self) -> str:
+        """Returns a user-friendly string representation."""
+        return f"JSONCleaner({self.filepath}) - {len(self.__cleaned_data)} cleaned records"
+
     def get_cleaned_data(self) -> list:
         """
         Provides access to the cleaned data.
@@ -41,6 +51,15 @@ class JSONCleaner:
             list: A list of dictionaries representing the cleaned JSON data.
         """
         return self.__cleaned_data
+
+    def get_raw_data(self) -> list:
+        """
+        Exposes the raw data loaded by the internal `JSONLoader`.
+
+        Returns:
+            list: The original list of dictionaries as loaded from the JSON file.
+        """
+        return self.__loader.get_raw_data()
 
     def trim_whitespace(self):
         """

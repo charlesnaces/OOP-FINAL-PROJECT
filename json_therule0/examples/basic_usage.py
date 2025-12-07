@@ -20,22 +20,4 @@ def main():
                         .remove_null_values()
                         .convert_type('price', float)
                         .remove_duplicates()
-                        .get_cleaned_data())
-        
-        print(f"State after cleaning: {cleaner}")
-
-        # 3. Pass the cleaned data to the reader for analysis
-        print("\n--- Analysis of Cleaned Data ---")
-        reader = JSONReader(cleaned_data)
-
-        print(f"Reader object: {reader}")
-        print(f"Shape of the data (rows, columns): {reader.shape()}")
-        print(f"Columns: {reader.get_columns()}")
-        print("\nSummary Statistics:")
-        print(reader.summary_stats())
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-if __name__ == "__main__":
-    main()
+                        .get_cleaned_d

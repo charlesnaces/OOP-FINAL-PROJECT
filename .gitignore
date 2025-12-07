@@ -22,6 +22,3 @@ dist/
 # Test artifacts
 .pytest_cache/
 .coverage
-
-# Dummy data files created by scripts
-sample_data.json

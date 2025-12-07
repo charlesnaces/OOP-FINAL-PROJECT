@@ -5,3 +5,6 @@ authors = [
     { name="Your Name", email="you@example.com" },
 ]
 description = "A library for loading, cleaning, and reading JSON data."
+
+[tool.setuptools]
+packages = ["json_therule0"]

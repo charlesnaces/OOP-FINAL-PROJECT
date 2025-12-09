@@ -2,7 +2,68 @@
 
 import json
 import copy
-from typing import Dict, List, Any, Tuple
+from typing import Dict, List, Any, Tuple, Union
+
+
+class TypeConverter:
+    """Simple type inference and conversion utility."""
+    
+    @staticmethod
+    def infer_type(values: list) -> str:
+        """
+        Infer the dominant type of a list of values.
+        Skips complex types (dict, list) and None values.
+        
+        Returns: 'int', 'float', 'bool', 'str', or 'mixed'
+        """
+        if not values:
+            return 'str'
+        
+        type_counts = {}
+        for v in values:
+            if v is None or isinstance(v, (dict, list)):
+                # Skip None and complex types
+                continue
+            t = type(v).__name__
+            type_counts[t] = type_counts.get(t, 0) + 1
+        
+        if not type_counts:
+            return 'str'
+        
+        # If only one type, return it
+        if len(type_counts) == 1:
+            return list(type_counts.keys())[0]
+        
+        # Multiple types - try numeric conversion
+        numeric_count = type_counts.get('int', 0) + type_counts.get('float', 0) + type_counts.get('str', 0)
+        if numeric_count == len(values):
+            return 'numeric'
+        
+        return 'mixed'
+    
+    @staticmethod
+    def convert_value(value: Any, target_type: str) -> Any:
+        """Convert a value to target type. Returns original if conversion fails."""
+        if value is None or isinstance(value, (dict, list)):
+            # Don't convert nested objects or arrays
+            return value
+        
+        try:
+            if target_type == 'int':
+                return int(float(str(value)))
+            elif target_type == 'float':
+                return float(str(value))
+            elif target_type == 'bool':
+                if isinstance(value, bool):
+                    return value
+                s = str(value).lower()
+                return s in ('true', '1', 'yes', 'on')
+            elif target_type == 'str':
+                return str(value)
+        except (ValueError, TypeError):
+            pass
+        
+        return value  # Return original if conversion fails
 
 
 class Normalizer:
@@ -189,6 +250,55 @@ class Normalizer:
         """
         return [{'data': self.raw_data}]
 
+    def auto_convert_types(self) -> List[Dict]:
+        """
+        Auto-convert column types based on value analysis.
+        
+        Scans all values in each column and converts to the best matching type.
+        Handles mixed types gracefully (keeps as-is if conversion fails).
+        
+        Returns:
+            list: Data with converted types.
+        """
+        if not self.normalized_data:
+            return self.normalized_data
+        
+        # Get all columns
+        columns = set()
+        for record in self.normalized_data:
+            columns.update(record.keys())
+        
+        # Analyze each column
+        column_types = {}
+        for col in columns:
+            values = [r.get(col) for r in self.normalized_data if col in r]
+            inferred = TypeConverter.infer_type(values)
+            
+            # Determine target type
+            if inferred == 'int':
+                column_types[col] = 'int'
+            elif inferred == 'float':
+                column_types[col] = 'float'
+            elif inferred == 'bool':
+                column_types[col] = 'bool'
+            elif inferred == 'numeric':
+                # Mixed int/float/str numbers - convert to float
+                column_types[col] = 'float'
+            else:
+                column_types[col] = 'str'
+        
+        # Convert values
+        converted_data = []
+        for record in self.normalized_data:
+            converted_record = {}
+            for col, value in record.items():
+                target_type = column_types.get(col, 'str')
+                converted_record[col] = TypeConverter.convert_value(value, target_type)
+            converted_data.append(converted_record)
+        
+        self.normalized_data = converted_data
+        return self.normalized_data
+
     def get_structure_info(self) -> Dict[str, Any]:
         """
         Get information about the data structure.
@@ -196,7 +306,7 @@ class Normalizer:
         Returns:
             dict: Structure information including format, sections, and sample.
         """
-        info = {
+        info: Dict[str, Any] = {
             'detected_format': self.detected_format,
             'original_type': type(self.raw_data).__name__,
         }
@@ -256,11 +366,9 @@ class Normalizer:
 
     def normalize_auto(self) -> List[Dict]:
         """
-        Default normalization method: automatically detects format and normalizes.
-        This is the recommended way to normalize unstructured JSON files.
-
+        Alias for normalize() for backward compatibility.
+        
         Returns:
             list: Normalized data as list of dictionaries.
         """
-        self.detected_format = self._detect_format()
         return self.normalize()

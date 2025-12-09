@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "json_therule0"
-version = "0.1.1"
-description = "A library for loading, cleaning, and reading JSON data with OOP principles"
+version = "0.2.0"
+description = "Simple, pandas-like JSON handler for structured and unstructured data"
 requires-python = ">=3.8"
 authors = [
     { name="Charles Naces", email="naces.charleschristian@gmail.com" },
@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent",
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Topic :: Utilities",
 ]

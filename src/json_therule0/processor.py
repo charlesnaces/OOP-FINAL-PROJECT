@@ -3,8 +3,63 @@
 import json
 import copy
 from pathlib import Path
-from typing import Union
+from typing import Union, Any
 from .exceptions import MalformedJSONError, InvalidRootError
+
+
+class TypeConverter:
+    """Simple type inference and conversion utility (shared with Normalizer)."""
+    
+    @staticmethod
+    def infer_type(values: list) -> str:
+        """Infer dominant type of values: 'int', 'float', 'bool', 'str', 'numeric', or 'mixed'."""
+        if not values:
+            return 'str'
+        
+        type_counts = {}
+        for v in values:
+            if v is None or isinstance(v, (dict, list)):
+                # Skip None and complex types
+                continue
+            t = type(v).__name__
+            type_counts[t] = type_counts.get(t, 0) + 1
+        
+        if not type_counts:
+            return 'str'
+        
+        if len(type_counts) == 1:
+            return list(type_counts.keys())[0]
+        
+        # Multiple types - check if numeric
+        numeric_count = type_counts.get('int', 0) + type_counts.get('float', 0) + type_counts.get('str', 0)
+        if numeric_count == len(values):
+            return 'numeric'
+        
+        return 'mixed'
+    
+    @staticmethod
+    def convert_value(value: Any, target_type: str) -> Any:
+        """Convert value to target type. Skip complex types (dict, list)."""
+        if value is None or isinstance(value, (dict, list)):
+            # Don't convert nested objects or arrays
+            return value
+        
+        try:
+            if target_type == 'int':
+                return int(float(str(value)))
+            elif target_type == 'float':
+                return float(str(value))
+            elif target_type == 'bool':
+                if isinstance(value, bool):
+                    return value
+                s = str(value).lower()
+                return s in ('true', '1', 'yes', 'on')
+            elif target_type == 'str':
+                return str(value)
+        except (ValueError, TypeError):
+            pass
+        
+        return value
 
 
 class Processor:
@@ -99,7 +154,7 @@ class Processor:
 
     # ============ Cleaning Methods ============
 
-    def trim(self):
+    def trim_whitespace(self):
         """
         Trim leading/trailing whitespace from all string values.
         
@@ -118,7 +173,7 @@ class Processor:
         recursive_trim(self.__cleaned_data)
         return self
 
-    def drop_null(self):
+    def remove_null_values(self):
         """
         Remove key-value pairs where the value is None.
         
@@ -144,7 +199,7 @@ class Processor:
         recursive_remove_nulls(self.__cleaned_data)
         return self
 
-    def drop_duplicates(self):
+    def remove_duplicates(self):
         """
         Remove duplicate records from the data.
         
@@ -169,17 +224,59 @@ class Processor:
             Processor: Self for method chaining.
         """
         return (self
-                .trim()
-                .drop_null()
-                .drop_duplicates())
+                .trim_whitespace()
+                .remove_null_values()
+                .remove_duplicates())
+
+    def auto_convert_types(self):
+        """
+        Auto-convert column types based on value analysis.
+        
+        Returns:
+            Processor: Self for method chaining.
+        """
+        if not self.__cleaned_data:
+            return self
+        
+        # Get all columns
+        columns = set()
+        for record in self.__cleaned_data:
+            if isinstance(record, dict):
+                columns.update(record.keys())
+        
+        # Analyze each column
+        column_types = {}
+        for col in columns:
+            values = [r.get(col) for r in self.__cleaned_data if isinstance(r, dict) and col in r]
+            inferred = TypeConverter.infer_type(values)
+            
+            if inferred == 'int':
+                column_types[col] = 'int'
+            elif inferred == 'float':
+                column_types[col] = 'float'
+            elif inferred == 'bool':
+                column_types[col] = 'bool'
+            elif inferred == 'numeric':
+                column_types[col] = 'float'
+            else:
+                column_types[col] = 'str'
+        
+        # Convert values
+        converted_data = []
+        for record in self.__cleaned_data:
+            if isinstance(record, dict):
+                converted_record = {}
+                for col, value in record.items():
+                    target_type = column_types.get(col, 'str')
+                    converted_record[col] = TypeConverter.convert_value(value, target_type)
+                converted_data.append(converted_record)
+            else:
+                converted_data.append(record)
+        
+        self.__cleaned_data = converted_data
+        return self
 
     def load_and_process(self):
-        """
-        Default processing method: load and clean in one call.
-        This is the recommended way to process files.
+        """Alias for clean() for backward compatibility."""
+        return self.clean()
 
-        Returns:
-            Processor: Self for chaining.
-        """
-        self.clean()
-        return self

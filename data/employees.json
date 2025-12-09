@@ -1,0 +1,70 @@
+[
+  {
+    "user_id": "U001",
+    "name": "  Alice Johnson  ",
+    "email": "alice@example.com",
+    "age": "28",
+    "salary": 75000.50,
+    "department": "Engineering",
+    "hire_date": "2020-03-15",
+    "is_active": "true",
+    "performance_score": "8.5",
+    "projects": ["ProjectA", "ProjectB"],
+    "metadata": {
+      "last_login": "2024-12-10T14:30:00Z",
+      "login_count": 156,
+      "tags": ["senior", "backend"]
+    }
+  },
+  {
+    "user_id": "U002",
+    "name": "Bob Smith",
+    "email": "bob@example.com",
+    "age": 32,
+    "salary": "85000",
+    "department": "Sales",
+    "hire_date": "2019-07-22",
+    "is_active": 1,
+    "performance_score": 7.2,
+    "projects": ["ProjectC"],
+    "metadata": {
+      "last_login": "2024-12-09T09:15:00Z",
+      "login_count": "342",
+      "tags": ["team_lead"]
+    }
+  },
+  {
+    "user_id": "U003",
+    "name": "Charlie Davis",
+    "email": "charlie@example.com",
+    "age": null,
+    "salary": 0,
+    "department": "HR",
+    "hire_date": "2021-01-10",
+    "is_active": "false",
+    "performance_score": null,
+    "projects": [],
+    "metadata": {
+      "last_login": null,
+      "login_count": 0,
+      "tags": []
+    }
+  },
+  {
+    "user_id": "U004",
+    "name": "Diana Evans",
+    "email": "diana@example.com",
+    "age": "25",
+    "salary": 65000,
+    "department": "Design",
+    "hire_date": "2022-11-05",
+    "is_active": "TRUE",
+    "performance_score": "9.1",
+    "projects": ["ProjectA", "ProjectD", "ProjectE"],
+    "metadata": {
+      "last_login": "2024-12-10T16:45:00Z",
+      "login_count": 89,
+      "tags": ["designer", "ui", "creative"]
+    }
+  }
+]

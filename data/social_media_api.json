@@ -1,0 +1,82 @@
+[
+  {
+    "tweet_id": "1234567890",
+    "text": "Just launched our new feature! Check it out",
+    "author": {
+      "id": "user_123",
+      "username": "@company",
+      "followers": 50000,
+      "verified": true
+    },
+    "timestamp": "2024-12-10T14:30:00Z",
+    "metrics": {
+      "retweets": 1250,
+      "likes": 5320,
+      "replies": 342,
+      "impressions": 125000
+    },
+    "replies": [
+      {
+        "tweet_id": "1234567891",
+        "text": "Awesome! Can't wait to try it",
+        "author": {"username": "@user1"},
+        "metrics": {"likes": 45}
+      },
+      {
+        "tweet_id": "1234567892",
+        "text": "When will this be available?",
+        "author": {"username": "@user2"},
+        "metrics": {"likes": 12}
+      }
+    ],
+    "entities": {
+      "urls": ["https://example.com/feature"],
+      "hashtags": ["#launch", "#feature", "#excited"],
+      "mentions": ["@user1", "@user2"]
+    }
+  },
+  {
+    "tweet_id": "1234567900",
+    "text": "Love the new design",
+    "author": {
+      "id": "user_456",
+      "username": "@designer",
+      "followers": 12500
+    },
+    "timestamp": "2024-12-10T15:45:00Z",
+    "metrics": {
+      "retweets": 230,
+      "likes": 1890,
+      "replies": 45
+    },
+    "replies": [],
+    "entities": {
+      "hashtags": ["#design", "#ui"]
+    }
+  },
+  {
+    "tweet_id": "1234567910",
+    "text": "Quick question about integration",
+    "author": {
+      "id": "user_789",
+      "username": "@dev",
+      "followers": 3200,
+      "verified": false
+    },
+    "timestamp": "2024-12-10T16:20:00Z",
+    "metrics": {
+      "retweets": 5,
+      "likes": 28
+    },
+    "replies": [
+      {
+        "tweet_id": "1234567911",
+        "text": "Email support@example.com",
+        "author": {"username": "@support"}
+      }
+    ],
+    "entities": {
+      "mentions": ["@company"]
+    }
+  }
+]

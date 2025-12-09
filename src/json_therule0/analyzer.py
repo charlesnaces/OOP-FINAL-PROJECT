@@ -82,6 +82,10 @@ class Analyzer:
             list: A list of column name strings.
         """
         return self.__columns
+    
+    def columns(self) -> list:
+        """Alias for get_columns() for compatibility."""
+        return self.get_columns()
 
     def stats(self) -> dict:
         """
@@ -143,18 +147,6 @@ class Analyzer:
                 }
         return stats
 
-    def get_all(self) -> list:
-        """Returns all records. [Alias for backward compatibility]"""
-        return self._get_raw_data()
-
-    def head(self, n: int = 5) -> list:
-        """Get first n records."""
-        return self._get_raw_data()[:n]
-
-    def tail(self, n: int = 5) -> list:
-        """Get last n records."""
-        return self._get_raw_data()[-n:]
-
     def filter_by_value(self, column: str, value) -> list:
         """
         Filter records by column value.
@@ -167,6 +159,18 @@ class Analyzer:
             list: Matching records.
         """
         return [copy.deepcopy(r) for r in self.__data if r.get(column) == value]
+
+    def head(self, n: int = 5) -> list:
+        """Get first n records (compatibility method)."""
+        return self._get_raw_data()[:n]
+
+    def tail(self, n: int = 5) -> list:
+        """Get last n records (compatibility method)."""
+        return self._get_raw_data()[-n:]
+
+    def get_all(self) -> list:
+        """Get all records (compatibility method)."""
+        return self._get_raw_data()
 
     def to_csv(self, filepath: str, columns: Optional[List[str]] = None) -> None:
         """

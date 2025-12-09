@@ -1,0 +1,55 @@
+[
+  {
+    "event_id": "EVT001",
+    "event_name": "Product Launch",
+    "event_date": "2024-12-15",
+    "registered_attendees": "250",
+    "actual_attendees": 187,
+    "venue": "Grand Hall A",
+    "city": "New York",
+    "registration_status": [
+      {"status": "confirmed", "count": 180},
+      {"status": "cancelled", "count": 45},
+      {"status": "pending", "count": 25}
+    ],
+    "speakers": ["speaker1@example.com", "speaker2@example.com"],
+    "budget": 50000,
+    "spent": "48750.50",
+    "revenue": 0,
+    "is_public": true
+  },
+  {
+    "event_id": "EVT002",
+    "event_name": "Team Building",
+    "event_date": "2024-12-20",
+    "registered_attendees": 75,
+    "actual_attendees": "68",
+    "venue": "Resort Center",
+    "city": "Las Vegas",
+    "registration_status": [
+      {"status": "confirmed", "count": "68"},
+      {"status": "cancelled", "count": 5},
+      {"status": "pending", "count": "2"}
+    ],
+    "speakers": [],
+    "budget": "15000",
+    "spent": 14200,
+    "revenue": 2000.00,
+    "is_public": 0
+  },
+  {
+    "event_id": "EVT003",
+    "event_name": "Conference 2024",
+    "event_date": "2024-12-25",
+    "registered_attendees": null,
+    "actual_attendees": null,
+    "venue": null,
+    "city": null,
+    "registration_status": [],
+    "speakers": null,
+    "budget": null,
+    "spent": null,
+    "revenue": null,
+    "is_public": null
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "transaction_id": "TXN001",
+    "timestamp": "2024-12-10T08:30:00Z",
+    "customer_id": "CUST123",
+    "amount": "149.99",
+    "currency": "USD",
+    "status": "completed",
+    "payment_method": "credit_card",
+    "items_count": 3,
+    "tax_rate": 0.08,
+    "total_with_tax": 162.10
+  },
+  {
+    "transaction_id": "TXN002",
+    "timestamp": "2024-12-10T09:45:00Z",
+    "customer_id": "CUST456",
+    "amount": 250,
+    "currency": "USD",
+    "status": "pending",
+    "payment_method": "debit_card",
+    "items_count": "5",
+    "tax_rate": "0.08",
+    "total_with_tax": 270.00
+  },
+  {
+    "transaction_id": "TXN003",
+    "timestamp": "2024-12-10T10:20:00Z",
+    "customer_id": "CUST789",
+    "amount": "0.99",
+    "currency": "GBP",
+    "status": "failed",
+    "payment_method": null,
+    "items_count": null,
+    "tax_rate": null,
+    "total_with_tax": null
+  },
+  {
+    "transaction_id": "TXN004",
+    "timestamp": "2024-12-10T11:15:00Z",
+    "customer_id": "CUST123",
+    "amount": 500.00,
+    "currency": "EUR",
+    "status": "completed",
+    "payment_method": "paypal",
+    "items_count": 12,
+    "tax_rate": 0.19,
+    "total_with_tax": "595"
+  }
+]

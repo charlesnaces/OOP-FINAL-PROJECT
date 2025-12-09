@@ -1,12 +1,12 @@
 # json_therule0
 
-A beginner-friendly Python library that teaches Object-Oriented Programming (OOP) by solving a real problem: loading, cleaning, and analyzing JSON data. json_therule0 provides a compact, OOP-driven pipeline to clean messy JSON (trim whitespace, remove nulls, de-duplicate, correct types) and analyze the result with simple, well-documented classes.
+A beginner-friendly Python library that teaches Object-Oriented Programming (OOP) by solving real-world problems: loading, cleaning, and analyzing JSON data. Json_therule0 provides a compact, OOP-driven pipeline to clean messy JSON (trim whitespace, remove nulls, de-duplicate, correct types) and analyze the result with simple, well-documented classes.
 
 ## Project overview
 
 Why this exists
-- JSON from APIs, logs, or config files is often messy: extra whitespace, nulls, duplicated records, and incorrect types.
-- This project demonstrates how to apply core OOP principles—classes, encapsulation, inheritance, and single-responsibility—to build a reusable data-cleaning and analysis tool.
+- JSON from APIs, logs, or config files is often messy, with extra whitespace, nulls, duplicated records, and incorrect types.
+- This project explains how to apply core OOP principles—classes, encapsulation, inheritance, and single-responsibility—to build a reusable data-cleaning and analysis tool.
 - It’s both a practical utility for preprocessing JSON and an educational example for learners.
 
 Key features
@@ -19,11 +19,11 @@ Key features
 
 json_therule0 serves as a dual-purpose Python library: JSON data, often sourced from APIs and configuration files, is rarely clean. This library provides a structured, OOP-driven approach to automatically handle common issues 
 
- - Data Cleaning: Eliminating extra whitespace, managing missing values (nulls), and removing duplicate records.
- - Data Integrity: Correcting wrong data types to ensure your analysis is accurate.
- - OOP Learning: It's built using core OOP principles (classes, inheritance, and encapsulation), offering a practical learning experience.
- - Practical Use: Provides an Object-Oriented (OOP) pipeline for automatically cleaning messy JSON data (removing whitespace, duplicates, nulls, and correcting data types) to ensure data integrity for analysis.
- - Educational Use: Acts as a beginner-friendly, real-world example of how to apply core OOP principles (classes, inheritance, encapsulation) to solve common data problems.
+ - It eliminates extra whitespace, managing missing values (nulls), and removing duplicate records.
+ - Correcting wrong data types to ensure your analysis is accurate.
+ - It's built using core OOP principles (classes, inheritance, and encapsulation), offering a practical learning experience.
+ - Provides an Object-Oriented (OOP) pipeline for automatically cleaning messy JSON data (removing whitespace, duplicates, nulls, and correcting data types) to ensure data integrity for analysis.
+ - It acts as a beginner-friendly, real-world example of how to apply core OOP principles (classes, inheritance, encapsulation) to solve common data problems.
 
 ## Why Learn This?
 

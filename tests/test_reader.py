@@ -1,5 +1,5 @@
 import pytest
-from json_therule0.reader import JSONReader
+from json_therule0.analyzer import Analyzer
 
 
 @pytest.fixture
@@ -13,36 +13,38 @@ def sample_data():
 
 
 def test_reader_gets_all_records(sample_data):
-    """Tests that JSONReader retrieves all records."""
-    reader = JSONReader(sample_data)
-    records = reader.get_all()
+    """Tests that Analyzer retrieves all records."""
+    analyzer = Analyzer(sample_data)
+    records = analyzer.get_all()
 
     assert len(records) == 3
     assert records == sample_data
 
 
 def test_reader_gets_first_record(sample_data):
-    """Tests that JSONReader retrieves the first record."""
-    reader = JSONReader(sample_data)
-    first = reader.get_first()
+    """Tests that Analyzer retrieves the first record."""
+    analyzer = Analyzer(sample_data)
+    first = analyzer.head(1)[0]
 
     assert first == sample_data[0]
     assert first["name"] == "Alice"
 
 
+
+
 def test_reader_gets_last_record(sample_data):
-    """Tests that JSONReader retrieves the last record."""
-    reader = JSONReader(sample_data)
-    last = reader.get_last()
+    """Tests that Analyzer retrieves the last record."""
+    analyzer = Analyzer(sample_data)
+    last = analyzer.tail(1)[0]
 
     assert last == sample_data[-1]
     assert last["name"] == "Charlie"
 
 
 def test_reader_filters_records(sample_data):
-    """Tests that JSONReader filters records by condition."""
-    reader = JSONReader(sample_data)
-    filtered = reader.filter(lambda record: record["age"] > 25)
+    """Tests that Analyzer filters records by value."""
+    analyzer = Analyzer(sample_data)
+    filtered = analyzer.filter_by_value("name", "Alice")
 
-    assert len(filtered) == 2
-    assert all(r["age"] > 25 for r in filtered)
+    assert len(filtered) == 1
+    assert filtered[0]["name"] == "Alice"

@@ -1,22 +1,26 @@
 # json_therule0/jsonfile.py
 
-from .loader import JSONLoader
-from .normalizer import Normalizer
-from .cleaner import JSONCleaner
-from .analyzer import Analyzer
-from typing import List, Dict, Optional
+import copy
 import json
+from typing import List, Dict, Optional
+from .processor import Processor
+from .normalizer import Normalizer
+from .analyzer import Analyzer
+from .exceptions import InvalidRootError, MalformedJSONError
 
 
 class JSONFile:
     """
-    Simple, easy-to-use wrapper for processing JSON files.
-    Handles loading, normalizing, cleaning, and analyzing in one unified interface.
+    Simple, pandas-like interface for processing JSON files.
+    Auto-handles loading, normalizing, cleaning, and analyzing.
+    
+    Tries standard processing first. If data is unstructured, 
+    automatically uses Normalizer to convert it.
     """
 
     def __init__(self, filepath: str):
         """
-        Initialize and process JSON file with defaults.
+        Initialize and process JSON file with smart exception handling.
 
         Args:
             filepath (str): Path to the JSON file.
@@ -32,31 +36,44 @@ class JSONFile:
 
     def _process(self):
         """
-        Auto-process: load, normalize, clean, and prepare for analysis.
+        Auto-process with intelligent exception handling.
+        
+        Flow:
+        1. Try Processor (load + clean)
+        2. If InvalidRootError: Try Normalizer first, then Processor
+        3. Finally pass to Analyzer
         """
-        # Try to load as-is, if it fails, try normalizing first
         try:
-            # Load
-            loader = JSONLoader(self.filepath)
-            self._raw_data = loader.get_raw_data()
-            self._normalized_data = self._raw_data
-        except Exception:
-            # If loading fails, try normalizing first
+            # Try standard processing
+            processor = Processor(self.filepath)
+            self._raw_data = processor.get_raw_data()
+            processor.clean()
+            self._cleaned_data = processor.get_cleaned_data()
+            self._normalized_data = self._cleaned_data
+            
+        except InvalidRootError as e:
+            # Data is unstructured, use Normalizer
+            print(f"ℹ️  Detected unstructured JSON. Using Normalizer...")
             normalizer = Normalizer(self.filepath)
             self._normalized_data = normalizer.normalize_auto()
             self._raw_data = None
+            
+            # Clean the normalized data
+            processor = Processor.__new__(Processor)
+            processor._Processor__raw_data = self._normalized_data
+            processor._Processor__cleaned_data = copy.deepcopy(self._normalized_data)
+            processor.filepath = self.filepath
+            processor.clean()
+            self._cleaned_data = processor.get_cleaned_data()
+            
+        except Exception as e:
+            # Other errors (file not found, malformed JSON, etc.)
+            raise type(e)(str(e)) from e
         
-        # Clean
-        cleaner = JSONCleaner.__new__(JSONCleaner)
-        cleaner._JSONCleaner__loader = None
-        cleaner.filepath = self.filepath
-        cleaner._JSONCleaner__cleaned_data = self._normalized_data.copy() if isinstance(self._normalized_data, list) else self._normalized_data
-        self._cleaned_data = cleaner.clean_standard().get_cleaned_data()
-        
-        # Setup analyzer
+        # Setup analyzer with cleaned data
         self._analyzer = Analyzer(self._cleaned_data)
 
-    # ============ Simple Display Methods ============
+    # ============ Display Methods ============
 
     def head(self, n: int = 5) -> List[Dict]:
         """
@@ -106,13 +123,8 @@ class JSONFile:
         return "\n".join(output)
 
     def stats(self) -> Dict:
-        """
-        Get statistical summary of the data.
-
-        Returns:
-            dict: Summary statistics.
-        """
-        return self._analyzer.summary_stats()
+        """Get statistical summary of the data."""
+        return self._analyzer.stats()
 
     def summary(self) -> str:
         """
@@ -152,12 +164,7 @@ class JSONFile:
         return self._analyzer.shape()
 
     def columns(self) -> List[str]:
-        """
-        Get column names.
-
-        Returns:
-            list: Column names.
-        """
+        """Get column names."""
         return self._analyzer.get_columns()
 
     def data(self) -> List[Dict]:
@@ -169,60 +176,17 @@ class JSONFile:
         """
         return self._analyzer.get_all()
 
-    # ============ Filtering & Selection ============
+    # ============ Filtering ============
 
-    def filter(self, column: str, value) -> 'JSONFile':
-        """
-        Filter by column value.
-
-        Args:
-            column (str): Column name.
-            value: Value to match.
-
-        Returns:
-            JSONFile: New instance with filtered data.
-        """
-        filtered = self._analyzer.filter_by_value(column, value)
-        new_file = JSONFile.__new__(JSONFile)
-        new_file.filepath = self.filepath
-        new_file._analyzer = filtered
-        new_file._cleaned_data = filtered.get_all()
-        new_file._normalized_data = None
-        new_file._raw_data = None
-        return new_file
-
-    def select(self, columns: List[str]) -> 'JSONFile':
-        """
-        Select specific columns.
-
-        Args:
-            columns (list): Column names to keep.
-
-        Returns:
-            JSONFile: New instance with selected columns.
-        """
-        selected_data = [
-            {col: record.get(col) for col in columns}
-            for record in self._cleaned_data
-        ]
-        new_file = JSONFile.__new__(JSONFile)
-        new_file.filepath = self.filepath
-        new_file._analyzer = Analyzer(selected_data)
-        new_file._cleaned_data = selected_data
-        new_file._normalized_data = None
-        new_file._raw_data = None
-        return new_file
+    def filter(self, column: str, value) -> list:
+        """Filter by column value, return matching records."""
+        return self._analyzer.filter_by_value(column, value)
 
     # ============ Export ============
 
     def to_csv(self, filepath: str) -> None:
-        """
-        Export to CSV file.
-
-        Args:
-            filepath (str): Output file path.
-        """
-        self._analyzer.export_to_csv(filepath)
+        """Export to CSV file."""
+        self._analyzer.to_csv(filepath)
         print(f"✓ Exported to {filepath}")
 
     def to_json(self, filepath: str) -> None:

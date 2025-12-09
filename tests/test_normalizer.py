@@ -3,7 +3,7 @@
 import unittest
 from pathlib import Path
 import json
-from json_therule0 import Normalizer, Analyzer, JSONCleaner
+from json_therule0 import Normalizer, Analyzer, Processor
 
 
 class TestNormalizer(unittest.TestCase):
@@ -89,7 +89,7 @@ class TestNormalizer(unittest.TestCase):
         self.assertEqual(len(analyzer), 4)
         self.assertGreater(len(analyzer.get_columns()), 0)
         
-        stats = analyzer.summary_stats()
+        stats = analyzer.stats()
         self.assertIsNotNone(stats)
 
 

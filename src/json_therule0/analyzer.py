@@ -83,15 +83,14 @@ class Analyzer:
         """
         return self.__columns
 
-    def summary_stats(self) -> dict:
+    def stats(self) -> dict:
         """
-        Generates descriptive statistics for each column.
-        - For numeric columns: count, mean, std, min, 25%, 50%, 75%, max.
-        - For non-numeric columns: count, unique, top, freq.
+        Get statistics for each column.
+        - Numeric: count, mean, std, min, 25%, 50%, 75%, max
+        - Other: count, unique, top, freq
 
         Returns:
-            dict: A dictionary where keys are column names and values are
-                  dictionaries of statistics.
+            dict: Statistics by column name.
         """
         stats = {}
         for col in self.__columns:
@@ -145,48 +144,40 @@ class Analyzer:
         return stats
 
     def get_all(self) -> list:
-        """
-        Returns a deep copy of all records.
-
-        Returns:
-            list: A list of record dictionaries.
-        """
+        """Returns all records. [Alias for backward compatibility]"""
         return self._get_raw_data()
 
-    def get_first(self):
-        """Return the first record or None if empty."""
-        if not self.__data:
-            return None
-        return copy.deepcopy(self.__data[0])
+    def head(self, n: int = 5) -> list:
+        """Get first n records."""
+        return self._get_raw_data()[:n]
 
-    def get_last(self):
-        """Return the last record or None if empty."""
-        if not self.__data:
-            return None
-        return copy.deepcopy(self.__data[-1])
+    def tail(self, n: int = 5) -> list:
+        """Get last n records."""
+        return self._get_raw_data()[-n:]
 
-    def filter(self, predicate: Callable[[dict], bool]) -> list:
-        """Return a list of records where predicate(record) is True.
+    def filter_by_value(self, column: str, value) -> list:
+        """
+        Filter records by column value.
 
         Args:
-            predicate (callable): A function that accepts a record and returns a boolean.
-        """
-        if not callable(predicate):
-            raise TypeError("predicate must be callable")
-        return [copy.deepcopy(r) for r in self.__data if predicate(r)]
+            column (str): Column name.
+            value: Value to match.
 
-    # ============ Advanced Analysis Methods ============
-
-    def export_to_csv(self, filepath: str, columns: Optional[List[str]] = None) -> None:
+        Returns:
+            list: Matching records.
         """
-        Exports the data to a CSV file.
+        return [copy.deepcopy(r) for r in self.__data if r.get(column) == value]
+
+    def to_csv(self, filepath: str, columns: Optional[List[str]] = None) -> None:
+        """
+        Export to CSV file.
 
         Args:
-            filepath (str): The path where the CSV will be saved.
-            columns (list, optional): Specific columns to export. Defaults to all columns.
+            filepath (str): Output file path.
+            columns (list, optional): Columns to export. Defaults to all.
         """
         data = self._get_raw_data()
-        cols_to_export = columns if columns else self.get_columns()
+        cols_to_export = columns if columns else self.__columns
 
         with open(filepath, 'w', newline='', encoding='utf-8') as f:
             writer = csv.DictWriter(f, fieldnames=cols_to_export)
@@ -194,71 +185,25 @@ class Analyzer:
             for record in data:
                 writer.writerow({col: record.get(col, '') for col in cols_to_export})
 
-    def filter_by_value(self, column: str, value) -> 'Analyzer':
+    def to_json(self, filepath: str) -> None:
         """
-        Filters data by a specific column value and returns a new Analyzer.
+        Export to JSON file.
 
         Args:
-            column (str): The column name to filter on.
-            value: The value to match.
-
-        Returns:
-            Analyzer: A new instance with filtered data.
+            filepath (str): Output file path.
         """
-        data = self._get_raw_data()
-        filtered = [record for record in data if record.get(column) == value]
-        return Analyzer(filtered)
-
-    def get_unique_values(self, column: str) -> List:
-        """
-        Returns unique values for a given column.
-
-        Args:
-            column (str): The column name.
-
-        Returns:
-            list: A sorted list of unique values.
-        """
-        data = self._get_raw_data()
-        unique = set()
-        for record in data:
-            if column in record:
-                value = record[column]
-                # Handle unhashable types like dicts
-                try:
-                    unique.add(value)
-                except TypeError:
-                    pass
-        return sorted([v for v in unique if v is not None], key=str)
-
-    def describe(self) -> Dict:
-        """
-        Returns a detailed description of the dataset.
-
-        Returns:
-            dict: Contains row count, column count, columns list, and summary statistics.
-        """
-        rows, cols = self.shape()
-
-        return {
-            'rows': rows,
-            'columns': cols,
-            'column_names': self.get_columns(),
-            'summary_stats': self.summary_stats()
-        }
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(self._get_raw_data(), f, indent=2)
 
     def analyze_default(self) -> Dict:
         """
-        Default analysis method: runs comprehensive analysis in one call.
-        Combines shape, summary stats, and detailed description.
-        This is the recommended way to analyze JSON data.
+        Run comprehensive analysis in one call.
 
         Returns:
-            dict: Complete analysis including shape, stats, and description.
+            dict: Shape, columns, and stats.
         """
         return {
             'shape': self.shape(),
             'columns': self.get_columns(),
-            'summary_stats': self.summary_stats(),
-            'description': self.describe()
+            'stats': self.stats()
         }

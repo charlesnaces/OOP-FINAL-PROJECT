@@ -1,7 +1,19 @@
 # json_therule0
 
-A beginner-friendly Python library that teaches you **Object-Oriented Programming (OOP)** while solving a real problem: **loading, cleaning, and analyzing JSON data**.
+A beginner-friendly Python library that teaches Object-Oriented Programming (OOP) by solving a real problem: loading, cleaning, and analyzing JSON data. json_therule0 provides a compact, OOP-driven pipeline to clean messy JSON (trim whitespace, remove nulls, de-duplicate, correct types) and analyze the result with simple, well-documented classes.
 
+## Project overview
+
+Why this exists
+- JSON from APIs, logs, or config files is often messy: extra whitespace, nulls, duplicated records, and incorrect types.
+- This project demonstrates how to apply core OOP principles—classes, encapsulation, inheritance, and single-responsibility—to build a reusable data-cleaning and analysis tool.
+- It’s both a practical utility for preprocessing JSON and an educational example for learners.
+
+Key features
+- JSONLoader: safe JSON loading with helpful errors
+- JSONCleaner: chainable cleaning methods (trim whitespace, remove nulls, remove duplicates, coerce types)
+- JSONReader / AdvancedJSONReader: basic and advanced analysis (summary statistics, type reports, export to CSV)
+- Tests and example data to show usage patterns and encourage learning by reading code
 
 ## Why Use This?
 
@@ -95,3 +107,75 @@ All tests pass (5/5 ✅).
 ## License
 
 MIT License - see LICENSE file for details.
+
+## Usage
+
+Basic (clean → analyze → export)
+```python
+from json_therule0 import JSONCleaner, AdvancedJSONReader
+
+# Step 1: Clean your file
+cleaner = JSONCleaner('data/sample_data.json')
+cleaned_data = (
+    cleaner
+    .trim_whitespace()      # strip extra spaces from string fields
+    .remove_null_values()   # drop or filter out null/missing entries
+    .remove_duplicates()    # remove duplicate records
+    .coerce_types()         # attempt to correct common type issues
+    .get_cleaned_data()     # return cleaned list/dict structure
+)
+
+# Step 2: Analyze
+reader = AdvancedJSONReader(cleaned_data)
+print(reader.summary_stats())        # basic stats per field
+print(reader.type_report())          # show inferred vs expected types
+
+# Step 3: Export
+reader.export_to_csv('clean.csv')    # save cleaned data to CSV
+```
+
+One-liner pipeline (method chaining)
+```python
+cleaned = JSONCleaner('data/sample_data.json') \
+    .trim_whitespace() \
+    .remove_null_values() \
+    .remove_duplicates() \
+    .get_cleaned_data()
+```
+
+Programmatic loader usage
+```python
+from json_therule0 import JSONLoader
+
+loader = JSONLoader('path/to/file.json')
+data = loader.load()   # returns Python dict/list or raises descriptive errors
+```
+
+Running the demo
+```bash
+python main.py
+```
+main.py demonstrates the full workflow with the example dataset.
+
+API reference (short)
+- JSONLoader(path: str) -> .load() -> dict|list
+- JSONCleaner(source: str | dict | list)
+  - .trim_whitespace()
+  - .remove_null_values(drop_keys: bool = False)
+  - .remove_duplicates(key: Optional[str] = None)
+  - .coerce_types(schema: Optional[dict] = None)
+  - .get_cleaned_data() -> dict|list
+- JSONReader / AdvancedJSONReader(data)
+  - .summary_stats()
+  - .type_report()
+  - .export_to_csv(path: str)
+
+(See inline docstrings for full parameter and return descriptions.)
+
+## Running tests
+
+Run unit tests with pytest:
+```bash
+pytest
+```
+All included tests should pass (example suite: 5/5 passing). If tests fail, run with -q and inspect failing tracebacks; open an issue or submit a PR with a failing example if needed.

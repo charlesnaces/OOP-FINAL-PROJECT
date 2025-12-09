@@ -4,6 +4,8 @@ from .loader import JSONLoader
 from .cleaner import JSONCleaner
 from .analyzer import Analyzer
 from .normalizer import Normalizer
+from .jsonfile import JSONFile
+from .api import read_json
 from .exceptions import InvalidJSONError
 
 # Backward compatibility
@@ -11,6 +13,10 @@ from .reader import JSONReader
 from .advanced import AdvancedJSONReader
 
 __all__ = [
+    # Simple API (recommended)
+    "read_json",
+    "JSONFile",
+    # Core modules
     "JSONLoader",
     "JSONCleaner",
     "Analyzer",

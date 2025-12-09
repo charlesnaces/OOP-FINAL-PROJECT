@@ -2,16 +2,23 @@
 
 from .loader import JSONLoader
 from .cleaner import JSONCleaner
+from .analyzer import Analyzer
+from .normalizer import Normalizer
+from .exceptions import InvalidJSONError
+
+# Backward compatibility
 from .reader import JSONReader
 from .advanced import AdvancedJSONReader
-from .exceptions import InvalidJSONError
 
 __all__ = [
     "JSONLoader",
     "JSONCleaner",
+    "Analyzer",
+    "Normalizer",
+    "InvalidJSONError",
+    # Backward compatibility
     "JSONReader",
     "AdvancedJSONReader",
-    "InvalidJSONError"
 ]
 
 # Package version

@@ -1,6 +1,5 @@
-# This setup.py is intentionally minimal. All configuration is in pyproject.toml.
-from setuptools import setup, find_packages
+"""Minimal setup.py. All configuration is in pyproject.toml."""
 
-setup(
-    packages=find_packages(),
-)
+from setuptools import setup
+
+setup()

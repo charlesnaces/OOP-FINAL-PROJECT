@@ -49,3 +49,8 @@ Thumbs.db
 *.csv
 messy_*.json
 cleaned_*.json
+
+# Pytest cache
+.pytest_cache/
+__pycache__/
+*.pyc

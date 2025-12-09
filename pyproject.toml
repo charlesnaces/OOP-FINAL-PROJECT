@@ -28,4 +28,7 @@ classifiers = [
 Homepage = "https://github.com/charlesnaces/OOP-FINAL-PROJECT"
 
 [tool.setuptools]
-packages = ["json_therule0"]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -71,3 +71,14 @@ class JSONLoader:
             list: A list of dictionaries representing the raw JSON data.
         """
         return self.__raw_data
+
+    def load_and_process(self):
+        """
+        Default processing method: loads and validates the JSON file.
+        This is the recommended way to load files.
+
+        Returns:
+            JSONLoader: Self for chaining, with data loaded and validated.
+        """
+        self.load()
+        return self

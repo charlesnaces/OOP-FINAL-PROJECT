@@ -246,3 +246,19 @@ class Analyzer:
             'column_names': self.get_columns(),
             'summary_stats': self.summary_stats()
         }
+
+    def analyze_default(self) -> Dict:
+        """
+        Default analysis method: runs comprehensive analysis in one call.
+        Combines shape, summary stats, and detailed description.
+        This is the recommended way to analyze JSON data.
+
+        Returns:
+            dict: Complete analysis including shape, stats, and description.
+        """
+        return {
+            'shape': self.shape(),
+            'columns': self.get_columns(),
+            'summary_stats': self.summary_stats(),
+            'description': self.describe()
+        }

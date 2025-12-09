@@ -205,6 +205,20 @@ class JSONCleaner:
         recursive_rename(self.__cleaned_data)
         return self
 
+    def clean_standard(self):
+        """
+        Default cleaning method: applies standard cleaning operations.
+        Trims whitespace, removes null values, and removes duplicates.
+        This is the recommended way to clean JSON files.
+
+        Returns:
+            JSONCleaner: Self for method chaining.
+        """
+        return (self
+                .trim_whitespace()
+                .remove_null_values()
+                .remove_duplicates())
+
 
 if __name__ == '__main__':
     """

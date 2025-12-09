@@ -253,3 +253,14 @@ class Normalizer:
     def __repr__(self) -> str:
         """String representation."""
         return f"<Normalizer format='{self.detected_format}' records={len(self.normalized_data)}>"
+
+    def normalize_auto(self) -> List[Dict]:
+        """
+        Default normalization method: automatically detects format and normalizes.
+        This is the recommended way to normalize unstructured JSON files.
+
+        Returns:
+            list: Normalized data as list of dictionaries.
+        """
+        self.detected_format = self._detect_format()
+        return self.normalize()
